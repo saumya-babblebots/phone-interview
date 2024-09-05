@@ -23,6 +23,7 @@ def create_payload(company, questions, candidate_phone_number, candidate_name):
         'assistant': {
             "firstMessage": prompts.first_bot_message.format(company=company, candidate_name=candidate_name),
             "endCallMessage": prompts.end_call_message,
+            "backgroundDenoisingEnabled": True,
             "responseDelaySeconds": 1.0,
             "silenceTimeoutSeconds": 30,
             "transcriber": {
