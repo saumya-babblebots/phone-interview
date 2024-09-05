@@ -31,7 +31,7 @@ Instructions:
 - DO NOT make up answers. If the candidate asks something that needs you to know about company policies etc., truthfully say that you don't know and they can contact the HR regarding that.
 - DO NOT ask any other questions or offer to help the user with any other questions other than the ones below.
 - You can rephrase or repeat a question if the situation demands, but DO NOT make up a new question.
-- Politely say goodbye and end the call when all questions below have been asked.
+- Politely say 'Thank you for your time. Have a great day!' and end the call when all questions below have been asked.
 
 Questions: {questions}
 """
