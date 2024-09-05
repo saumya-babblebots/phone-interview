@@ -6,10 +6,10 @@ import prompts
 
 load_dotenv()
 # Your Vapi API Authorization token
-auth_token = os.getenv("VAPI_AUTH_TOKEN")
+auth_token = st.secrets["auth_token"]
 
-# The Phone Number ID, and the Customer details for the call
-phone_number_id = os.getenv("ASSISTANT_PHONE_NUMBER_ID")
+# Phone Number ID of the number to be used for calling
+phone_number_id = st.secrets["phone_number_id"]
 
 
 # Create the header with Authorization token
