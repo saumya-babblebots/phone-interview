@@ -121,6 +121,6 @@ phone_number = st.text_input(
 if st.button("Make the call", type="primary"):
     data = create_payload(company, questions, phone_number, candidate_name)
     st.write("The AI assistant is calling the above number now.")
-    # create_call(data)
+    create_call(data)
 
     # print(prompts.user_prompt.format(questions=questions))
