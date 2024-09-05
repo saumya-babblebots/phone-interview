@@ -111,8 +111,8 @@ st.button("Onboarding flow with work history questions", on_click=work_history_f
 
 
 phone_number = st.text_input(
-    label="Enter the candidate's phone number here in the given format",
-    placeholder="+1-888-888-8888",
+    label="Enter the candidate's phone number here in the given format ('+' followed by the country-code and mobile-number with no spaces in-between )",
+    placeholder="+18888888888",
 )
 
 # st.button("Make the call", type="primary")
