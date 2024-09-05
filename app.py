@@ -1,10 +1,7 @@
 import streamlit as st
 import requests
-from python_dotenv import load_dotenv
-import os
 import prompts
 
-load_dotenv()
 # Your Vapi API Authorization token
 auth_token = st.secrets["auth_token"]
 
