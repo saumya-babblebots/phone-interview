@@ -81,7 +81,7 @@ def create_call(data):
 
 company = st.text_input(
     label="Enter the name of the company that the AI assistant is calling on behalf of",
-    value="AMS"
+    #value="AMS"
 )
 
 candidate_name = st.text_input(
