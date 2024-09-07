@@ -15,13 +15,13 @@ headers = {
     'Content-Type': 'application/json',
 }
 
-def create_payload(company, questions, candidate_phone_number, candidate_name):
+def create_payload(company, questions, candidate_phone_number, candidate_name, role):
     # Create the payload for the API request
     if not candidate_name:
         candidate_name = "there"
     data = {
         'assistant': {
-            "firstMessage": prompts.first_bot_message.format(company=company, candidate_name=candidate_name),
+            "firstMessage": prompts.first_bot_message.format(company=company, candidate_name=candidate_name, role=role),
             "endCallMessage": prompts.end_call_message,
             "backgroundDenoisingEnabled": True,
             "responseDelaySeconds": 1.0,
@@ -89,6 +89,10 @@ candidate_name = st.text_input(
     # value="AMS"
 )
 
+role = st.text_input(
+    label="Enter the role that the candidate is being interviewed for",
+)
+
 questions = st.text_area(
     label="Enter the questions here",
     height=300,
@@ -104,11 +108,22 @@ def work_history_flow_clicked():
 def signed_contract_flow_clicked():
     st.session_state.questions_text = prompts.signed_contract_questions.format(company=company)
 
+def sales_manager_flow_clicked():
+    st.session_state.questions_text = prompts.sales_manager_questions
+
+def software_engineer_flow_clicked():
+    st.session_state.questions_text = prompts.software_engineer_questions
+
+def nurse_practitioner_flow_clicked():
+    st.session_state.questions_text = prompts.nurse_practitioner_questions
+
 st.write("You can also choose from a questions template below")
 st.button("Warehouse Operator", on_click=warehouse_operator_flow_clicked)
 st.button("Onboarding flow asking for signed contract", on_click=signed_contract_flow_clicked)
 st.button("Onboarding flow with work history questions", on_click=work_history_flow_clicked)
-
+st.button("Channel Sales Manager", on_click=sales_manager_flow_clicked)
+st.button("Software Engineer", on_click=software_engineer_flow_clicked)
+st.button("Nurse Practitioner", on_click=nurse_practitioner_flow_clicked)
 
 phone_number = st.text_input(
     label="Enter the candidate's phone number here in the given format ('+' followed by the country-code and mobile-number with no spaces in-between )",
@@ -120,7 +135,7 @@ phone_number = st.text_input(
 # st.write(questions)
 
 if st.button("Make the call", type="primary"):
-    data = create_payload(company, questions, phone_number, candidate_name)
+    data = create_payload(company, questions, phone_number, candidate_name, role)
     st.write("The AI assistant is calling the above number now.")
     create_call(data)
 
