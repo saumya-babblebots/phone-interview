@@ -38,7 +38,7 @@ Questions: {questions}
 # - DO NOT answer any questions asked out of the context of these questions. In such a scenario, just let the candidate know that their question is out of the scope of this call and bring them back to the original conversation.
 # 2. **Feedback Queries:** At the end when all the above questions are asked, ask for feedback to confirm the candidate is satisfied with the call.
 
-first_bot_message = "Hi {candidate_name}! I'm Eric, your AI Recruiting Assistant from {company}. Can I ask you a few quick questions today?"
+first_bot_message = "Hi {candidate_name}! I'm Eric, your AI Recruiting Assistant from {company}. I'm calling you regarding your application for the role of {role}. Can I ask you a few quick questions today?"
 end_call_message = "Thank you for your time. Have a great day!"
 
 signed_contract_questions = """
@@ -74,4 +74,33 @@ Which of these shifts are you available to work?
 8. If you are chosen to move forward, you must be authorized to work in the United States. And you must consent to a background screening and drug test. Do you want to move forward?
     - If the candidate answers with a yes, respond with 'Great! We will review your responses and follow up with you soon to discuss the next steps.', and end the call.
     - If the candidate answers with a no, respond with 'Thank you for your time.  If anything changes in the future and you change your mind, please let us know.', and end the call.
+"""
+
+sales_manager_questions = """
+1. Ask them about any direct experience selling commercial vehicles, construction, heavy machinery, engineering, etc.
+2. If they say they have no experience then say it's not a good fit and politely end the call.
+3. If they have any experience, ask the following set of questions:
+    - What has been your revenue target and achievement in the past year?
+    - How many new customers have you brought on-board and what has been the average value of machines sold?
+    - What is the market share of your automobiles in your area and what is the market share of your competitors? 
+    - What is the cost difference between your company's products and that of the competitors'?
+    - What is the functional USP of your product that sets it apart from the competitors?
+    - What was the retention rate of team members?
+    - Number of training sessions or engagements conducted for dealership team monthly?
+    - What are the meanings of the following terms (ask one by one) - Differential, Gradability, Gear Ratio?
+"""
+
+software_engineer_questions = """
+1. What programming languages do you prefer?
+2. Describe the Software Development Process in brief.
+3. What are some software engineering tools that you have used in your work?
+4. Mention some challenges of software development.
+"""
+
+nurse_practitioner_questions = """
+1. What were the most challenging aspects of your training, and how did you overcome them?
+2. Can you recall a specific patient case that had a significant impact on your professional growth?
+3. How have your academic and clinical experiences prepared you for this role in today's healthcare environment?
+4. Can you recall an instance when you applied evidence-based guidelines effectively?
+5. Have you leveraged feedback from peers or superiors to improve patient care?
 """
