@@ -154,7 +154,7 @@ if st.button("Interview Recording"):
     if call_id:    
         url = f"https://api.vapi.ai/call/{call_id}"
         response = requests.request("GET", url, headers=headers)
-        if response.status_code == 200
+        if response.status_code == 200:
             recording = response.json().get("recordingUrl",None)
             print(recording)
         
