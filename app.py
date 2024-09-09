@@ -148,7 +148,7 @@ if st.button("Make the call", type="primary"):
     create_call(data)
 
     # print(prompts.user_prompt.format(questions=questions))
-
+st.markdown("<br><br>", unsafe_allow_html=True)
 if st.button("Interview Recording"):
     call_id = get_call_id()
     if call_id:    
