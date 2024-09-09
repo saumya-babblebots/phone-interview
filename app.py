@@ -105,7 +105,7 @@ questions = st.text_area(
     key="questions_text"
 )
 def get_call_id():
-    return st.session_state.call_id
+    return st.session_state.get('call_id', None)
     
 def warehouse_operator_flow_clicked():
     st.session_state.questions_text = prompts.warehouse_operator_questions
@@ -149,27 +149,22 @@ if st.button("Make the call", type="primary"):
 
     # print(prompts.user_prompt.format(questions=questions))
 
-call_id = get_call_id()
-
 if st.button("Interview Recording"):
-    if call_id:
-            
+    call_id = get_call_id()
+    if call_id:    
         url = f"https://api.vapi.ai/call/{call_id}"
-
-        headers = {
-            'Authorization': f'Bearer {auth_token}',
-            'Content-Type': 'application/json',
-        }
-
         response = requests.request("GET", url, headers=headers)
-        recording = response.json().get("recordingUrl",None)
-        print(recording)
+        if response.status_code == 200
+            recording = response.json().get("recordingUrl",None)
+            print(recording)
         
-        if recording:
-            st.markdown("<br><br>", unsafe_allow_html=True)
-            st.audio(recording)
+            if recording:
+                st.markdown("<br><br>", unsafe_allow_html=True)
+                st.audio(recording)
+            else: 
+                st.warning("No recording found or call is still in progress!")
         else:
-            st.error("No recording found")
+            st.error(f"failed to fetch interview details {response.status_code} - {response.text}")
         
     else:
-        st.error("Call id not found, please make a call first")
+        st.info("Call id not found, please make a call first")
