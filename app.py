@@ -105,8 +105,10 @@ questions = st.text_area(
     key="questions_text"
 )
 def get_call_id():
+    if 'call_id' not in st.session_state:
+        st.session_state.call_id = None
     return st.session_state.call_id
-
+    
 def warehouse_operator_flow_clicked():
     st.session_state.questions_text = prompts.warehouse_operator_questions
 
