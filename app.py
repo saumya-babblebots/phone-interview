@@ -79,7 +79,7 @@ def create_call(data):
     # Check if the request was successful
     if response.status_code == 201:
         print('Call created successfully')
-        st.session_state.call_id = response.json().get('id')
+        st.session_state.call_id = response.json().get('id', None)
         print(response.json())
     else:
         print('Failed to create call')
