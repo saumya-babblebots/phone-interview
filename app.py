@@ -149,7 +149,7 @@ if st.button("Make the call", type="primary"):
 
     # print(prompts.user_prompt.format(questions=questions))
 st.markdown("<br><br>", unsafe_allow_html=True)
-if st.button("Interview Recording"):
+if st.button("Interview Recording", type="primary"):
     call_id = get_call_id()
     if call_id:    
         url = f"https://api.vapi.ai/call/{call_id}"
@@ -159,7 +159,7 @@ if st.button("Interview Recording"):
             print(recording)
         
             if recording:
-                st.markdown("<br><br>", unsafe_allow_html=True)
+                st.markdown("<br>", unsafe_allow_html=True)
                 st.audio(recording)
             else: 
                 st.warning("No recording found or call is still in progress!")
