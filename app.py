@@ -64,6 +64,8 @@ def create_payload(company, questions, candidate_phone_number, candidate_name, r
 
     return data
 
+if 'call_id' not in st.session_state:
+    st.session_state.call_id = None
 
 def create_call(data):
     # Make the POST request to VAPI to create the phone call
@@ -74,6 +76,7 @@ def create_call(data):
     # Check if the request was successful
     if response.status_code == 201:
         print('Call created successfully')
+        st.session_state.call_id = response.json().get('id')
         print(response.json())
     else:
         print('Failed to create call')
@@ -98,6 +101,8 @@ questions = st.text_area(
     height=300,
     key="questions_text"
 )
+def get_call_id():
+    return st.session_state.call_id
 
 def warehouse_operator_flow_clicked():
     st.session_state.questions_text = prompts.warehouse_operator_questions
