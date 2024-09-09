@@ -2,8 +2,8 @@ import streamlit as st
 import requests
 import prompts
 
-st.markdown("# Interview Recording")  
-st.sidebar.markdown("# Get Recording")
+st.markdown("# Initiate a call ")  
+st.sidebar.markdown("# Creating a call")
 
 # Your Vapi API Authorization token
 auth_token = st.secrets["auth_token"]
