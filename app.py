@@ -148,3 +148,28 @@ if st.button("Make the call", type="primary"):
     create_call(data)
 
     # print(prompts.user_prompt.format(questions=questions))
+
+call_id = get_call_id()
+
+if st.button("Interview Recording"):
+    if call_id:
+            
+        url = f"https://api.vapi.ai/call/{call_id}"
+
+        headers = {
+            'Authorization': f'Bearer {auth_token}',
+            'Content-Type': 'application/json',
+        }
+
+        response = requests.request("GET", url, headers=headers)
+        recording = response.json().get("recordingUrl",None)
+        print(recording)
+        
+        if recording:
+            st.markdown("<br><br>", unsafe_allow_html=True)
+            st.audio(recording)
+        else:
+            st.error("No recording found")
+        
+    else:
+        st.error("Call id not found, please make a call first")
