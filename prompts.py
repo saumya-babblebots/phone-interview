@@ -41,7 +41,7 @@ Questions: {questions}
 first_bot_message = "Hi {candidate_name}, I’m Eric, an AI-Recruiter Assistant from {company}. I’m reaching out about the {role} position and have a few questions for you. I understand this might be your first time speaking with an AI-Recruiter, so thanks for taking the time to chat with me!"
 end_call_message = "Thank you for your time {candidate_name}, someone from our team will contact you further if you get shortlisted. Have a great day. Bye!"
 
-Retail Appointment Generator = """
+retail_appointment_generator = """
 1. So {first_name}, can you tell me about your most recent work experience in customer service or sales?
 2. This role requires working three full 8-hour shifts between Friday and Monday, totalling 24 hours per week. Would that work for you?
 3. We're looking for someone who can start in the next two weeks. Would you be available to begin then?
