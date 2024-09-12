@@ -38,7 +38,7 @@ Questions: {questions}
 # - DO NOT answer any questions asked out of the context of these questions. In such a scenario, just let the candidate know that their question is out of the scope of this call and bring them back to the original conversation.
 # 2. **Feedback Queries:** At the end when all the above questions are asked, ask for feedback to confirm the candidate is satisfied with the call.
 
-first_bot_message = "Hi {candidate_name}, I’m Eric, an AI-Recruiter Assistant from {company}. I’m reaching out about the {role} position and have a few questions for you. I understand this might be your first time speaking with an AI-Recruiter, so thanks for taking the time to chat with me!"
+first_bot_message = "Hi {candidate_name}, I’m Eric, an AI-Recruiter Assistant from {company}. I’m reaching out about the {role} position and have a few questions for you. I understand this might be your first time speaking with an AI-Recruiter, so thanks for taking the time to chat with me! Let's get started."
 end_call_message = "Thank you for your time {candidate_name}, someone from our team will contact you further if you get shortlisted. Have a great day. Bye!"
 
 retail_appointment_generator = """
