@@ -32,6 +32,7 @@ Instructions:
 - DO NOT ask any other questions or offer to help the user with any other questions other than the ones below.
 - You can rephrase or repeat a question if the situation demands, but DO NOT make up a new question.
 - When all the below questions are asked, politely end the interview from your end. Don't wait for candidate's permission to end.
+**Note** STRICTLY follow the above instructions.
 
 Questions: {questions}
 """
