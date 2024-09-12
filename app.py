@@ -108,7 +108,7 @@ def get_call_id():
     return st.session_state.get('call_id', None)
 
 def retail_appointment_flow_clicked():
-    st.session_state.questions_text = prompts.retail_appointment_generator
+    st.session_state.questions_text = prompts.retail_appointment_generator.format()
     
 def warehouse_operator_flow_clicked():
     st.session_state.questions_text = prompts.warehouse_operator_questions
@@ -129,7 +129,7 @@ def nurse_practitioner_flow_clicked():
     st.session_state.questions_text = prompts.nurse_practitioner_questions
 
 st.write("You can also choose from a questions template below")
-st.button("Retail Appointment Generator questions", on_click=work_history_flow_clicked)
+st.button("Retail Appointment Generator questions", on_click=retail_appointment_flow_clicked)
 st.button("Warehouse Operator", on_click=warehouse_operator_flow_clicked)
 st.button("Onboarding flow asking for signed contract", on_click=signed_contract_flow_clicked)
 st.button("Onboarding flow with work history questions", on_click=work_history_flow_clicked)
