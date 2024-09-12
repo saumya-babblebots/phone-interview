@@ -38,8 +38,14 @@ Questions: {questions}
 # - DO NOT answer any questions asked out of the context of these questions. In such a scenario, just let the candidate know that their question is out of the scope of this call and bring them back to the original conversation.
 # 2. **Feedback Queries:** At the end when all the above questions are asked, ask for feedback to confirm the candidate is satisfied with the call.
 
-first_bot_message = "Hi {candidate_name}! I'm Eric, your AI Recruiting Assistant from {company}. I'm calling you regarding your application for the role of {role}. Can I ask you a few quick questions today?"
-end_call_message = "Thank you for your time. Have a great day!"
+first_bot_message = "Hi {candidate_name}, I’m Eric, an AI-Recruiter Assistant from {company}. I’m reaching out about the {role} position and have a few questions for you. I understand this might be your first time speaking with an AI-Recruiter, so thanks for taking the time to chat with me!"
+end_call_message = "Thank you for your time {candidate_name}, someone from our team will contact you further if you get shortlisted. Have a great day. Bye!"
+
+Retail Appointment Generator = """
+1. So {first_name}, can you tell me about your most recent work experience in customer service or sales?
+2. This role requires working three full 8-hour shifts between Friday and Monday, totalling 24 hours per week. Would that work for you?
+3. We're looking for someone who can start in the next two weeks. Would you be available to begin then?
+"""
 
 signed_contract_questions = """
 1. We're calling as you are due to start your role with {company} on Monday, however we haven't received your signed contract. Can you confirm if you have received it via email?
