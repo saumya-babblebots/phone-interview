@@ -26,6 +26,7 @@ def create_payload(company, questions, candidate_phone_number, candidate_name, r
         'assistant': {
             "firstMessage": prompts.first_bot_message.format(company=company, candidate_name=candidate_name, role=role),
             "endCallMessage": prompts.end_call_message.format(candidate_name=candidate_name),
+            "endCallPhrases": ["Thank you for your time. Have a great day."],
             "backgroundDenoisingEnabled": True,
             "responseDelaySeconds": 1.0,
             "silenceTimeoutSeconds": 30,
@@ -49,7 +50,7 @@ def create_payload(company, questions, candidate_phone_number, candidate_name, r
                     }
                 ]
             },
-            "endCallFunctionEnabled": True,
+            #"endCallFunctionEnabled": True,
             "voice":  {
                 "model": "eleven_turbo_v2_5",
                 "voiceId": "cjVigY5qzO86Huf0OWal", #"orpheus",
