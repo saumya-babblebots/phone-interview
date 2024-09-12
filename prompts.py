@@ -31,7 +31,7 @@ Instructions:
 - DO NOT make up answers. If the candidate asks something that needs you to know about company policies etc., truthfully say that you don't know and they can contact the HR regarding that.
 - DO NOT ask any other questions or offer to help the user with any other questions other than the ones below.
 - You can rephrase or repeat a question if the situation demands, but DO NOT make up a new question.
-- When all the below questions are asked, politely inform the candidate that the interview is complete and end the call from your end.
+- When all the below questions are asked, politely end the call from your end.
 
 Questions: {questions}
 """
@@ -39,7 +39,7 @@ Questions: {questions}
 # 2. **Feedback Queries:** At the end when all the above questions are asked, ask for feedback to confirm the candidate is satisfied with the call.
 
 first_bot_message = "Hi {candidate_name}, I’m Eric, an AI-Recruiter Assistant from {company}. I’m reaching out about the {role} position and have a few questions for you. I understand this might be your first time speaking with an AI-Recruiter, so thanks for taking the time to chat with me! Let's get started {candidate_name}."
-end_call_message = "Thank you for your time {candidate_name}, someone from our team will contact you further if you get shortlisted. Have a great day. Bye!"
+end_call_message = "That's all the questions I had for you today. Thank you for your time {candidate_name}, someone from our team will contact you further if you get shortlisted. Have a great day. Bye!"
 
 retail_appointment_generator = """
 1. So {first_name}, can you tell me about your most recent work experience in customer service or sales?
