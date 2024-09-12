@@ -108,7 +108,7 @@ def get_call_id():
     return st.session_state.get('call_id', None)
 
 def retail_appointment_flow_clicked():
-    st.session_state.questions_text = prompts.retail_appointment_generator.format()
+    st.session_state.questions_text = prompts.retail_appointment_generator.format(first_name=candidate_name)
     
 def warehouse_operator_flow_clicked():
     st.session_state.questions_text = prompts.warehouse_operator_questions
