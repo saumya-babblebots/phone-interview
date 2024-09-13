@@ -153,7 +153,7 @@ if st.button("Make the call", type="primary"):
     create_call(data)
 
     # print(prompts.user_prompt.format(questions=questions))
-st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("# ")
 if st.button("Interview Recording", type="primary"):
     call_id = get_call_id()
     if call_id:    
@@ -164,7 +164,7 @@ if st.button("Interview Recording", type="primary"):
             print(recording)
         
             if recording:
-                st.markdown("<br>", unsafe_allow_html=True)
+                st.markdown("# ")
                 st.audio(recording)
             else: 
                 st.warning("No recording found or call is still in progress!")
