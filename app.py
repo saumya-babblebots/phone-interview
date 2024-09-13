@@ -74,7 +74,7 @@ if 'call_id' not in st.session_state:
 def create_call(data):
     # Make the POST request to VAPI to create the phone call
     response = requests.post(
-        'https://api.vapi.ai/call/phone', headers=headers, json=data
+        'https://api.vapi.ai/call', headers=headers, json=data
     )
 
     # Check if the request was successful
