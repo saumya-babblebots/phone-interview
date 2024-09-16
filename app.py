@@ -1,9 +1,12 @@
 import streamlit as st
 import requests
+import time
 import prompts
+import config
+from region_voices import REGION_VOICES
 
 st.markdown("# Initiate a call ")  
-st.sidebar.markdown("# Creating a call")
+st.sidebar.markdown("# Babblebots ")
 
 # Your Vapi API Authorization token
 auth_token = st.secrets["auth_token"]
@@ -18,46 +21,39 @@ headers = {
     'Content-Type': 'application/json',
 }
 
-def create_payload(company, questions, candidate_phone_number, candidate_name, role):
+def create_payload(company, questions, candidate_phone_number, candidate_name, role, region, selected_template):
     # Create the payload for the API request
     if not candidate_name:
         candidate_name = "there"
+        
+    config.stt_model["keywords"] = [company, candidate_name]
+    config.llm["messages"][0]["content"] = prompts.system_prompt.format(company=company)
+    config.llm["messages"][1]["content"] = prompts.user_prompt.format(questions=questions, company=company)
+    if (selected_template == "Car Salesman") or (role.lower() == "car salesman"):
+        config.llm['messages'][1]['content'] = prompts.user_prompt_with_probing.format(questions=questions, company=company)
+        
+    if region == 'India':
+        recruiter = "Tina"
+    else:
+        recruiter = "Eric"
+        
+    voice_settings = REGION_VOICES.get(region,REGION_VOICES['US'])
+    
     data = {
         'assistant': {
-            "firstMessage": prompts.first_bot_message.format(company=company, candidate_name=candidate_name, role=role),
-            "endCallMessage": prompts.end_call_message.format(candidate_name=candidate_name),
-            #"endCallPhrases": ["Thank you for your time. Have a great day."],
+            "firstMessage": prompts.first_bot_message.format(company=company, candidate_name=candidate_name, role=role, recruiter=recruiter),
+            #"endCallMessage": prompts.end_call_message.format(candidate_name=candidate_name),
+            "endCallPhrases": ["Have a great day."],
             "backgroundDenoisingEnabled": True,
-            "responseDelaySeconds": 1.0,
+            "responseDelaySeconds": 0.8,
             "silenceTimeoutSeconds": 30,
-            "transcriber": {
-                "model": "nova-2",
-                "language": "en",
-                "provider": "deepgram",
-                "keywords": [company, candidate_name]
-            },
-            "model": {
-                "provider": "openai",
-                "model": "gpt-4o-mini",
-                "maxTokens": 150,
-                "numFastTurns": 2,
-                "messages": [
-                    {
-                        "role": "system",
-                        "content": prompts.system_prompt.format(company=company),
-                        "role": "assistant",
-                        "content": prompts.user_prompt.format(questions=questions, company=company)
-                    }
-                ]
+            "transcriber": config.stt_model,
+            "model": config.llm,
+            "startSpeakingPlan": {
+                "waitSeconds": 0.8
             },
             "endCallFunctionEnabled": True,
-            "voice":  {
-                "model": "eleven_turbo_v2_5",
-                "voiceId": "cjVigY5qzO86Huf0OWal", #"orpheus",
-                "provider": "11labs", # 'deepgram'
-                "stability": 0.5,
-                "similarityBoost": 0.75
-            },
+            "voice":  voice_settings,
             "backgroundSound": "off"
         },
         'phoneNumberId': phone_number_id,
@@ -68,23 +64,50 @@ def create_payload(company, questions, candidate_phone_number, candidate_name, r
 
     return data
 
+region = st.selectbox(
+    label="Select the region",
+    options=list(REGION_VOICES.keys())  
+)
+
 if 'call_id' not in st.session_state:
     st.session_state.call_id = None
+    
+if 'recording_button_clicked' not in st.session_state:
+    st.session_state.recording_button_clicked = True
+
+def show_questions():
+    selected_option = st.session_state.questions_dropdown
+    print(f"Selected option: {selected_option}")
+    if selected_option:
+        st.session_state.questions_text = prompts.interview_questions["_".join(selected_option.lower().split())]
+    else:
+        st.session_state.questions_text = ""
 
 def create_call(data):
     # Make the POST request to VAPI to create the phone call
-    response = requests.post(
-        'https://api.vapi.ai/call', headers=headers, json=data
-    )
+    try: 
+        response = requests.post(
+            'https://api.vapi.ai/call', headers=headers, json=data
+        )
 
-    # Check if the request was successful
-    if response.status_code == 201:
-        print('Call created successfully')
-        st.session_state.call_id = response.json().get('id', None)
-        print(response.json())
-    else:
-        print('Failed to create call')
-        print(response.text)
+        # Check if the request was successful
+        if response.text:
+            if response.status_code == 201:
+                print('Call created successfully')
+                st.session_state.call_id = response.json().get('id', None)
+                print(response.json())
+            else:
+                print('Failed to create call')
+                print(response.text)
+        else:
+            print("No data received to create call")
+    except Exception as e:
+        print('Error creating call')
+        print("Error: ", e)
+
+
+def get_call_id():
+    return st.session_state.get('call_id', None)
 
 company = st.text_input(
     label="Enter the name of the company that the AI assistant is calling on behalf of",
@@ -100,61 +123,54 @@ role = st.text_input(
     label="Enter the role that the candidate is being interviewed for",
 )
 
+selected_template = st.selectbox(
+    "Choose the interview questions from one of these templates or type out your own below",
+    (
+        "Retail Appointment Generator", 
+        "Warehouse Operator", 
+        "Onboarding flow asking for signed contract", 
+        "Onboarding flow asking for work history",
+        "Channel Sales Manager",
+        "Software Engineer",
+        "Nurse Practitioner",
+        "Car Salesman"
+    ),
+    index=None,
+    on_change=show_questions,
+    key="questions_dropdown"
+)
+
 questions = st.text_area(
     label="Enter the questions here",
-    height=300,
+    height=200,
     key="questions_text"
 )
-def get_call_id():
-    return st.session_state.get('call_id', None)
 
-def retail_appointment_flow_clicked():
-    st.session_state.questions_text = prompts.retail_appointment_generator.format(first_name=candidate_name)
-    
-def warehouse_operator_flow_clicked():
-    st.session_state.questions_text = prompts.warehouse_operator_questions
-
-def work_history_flow_clicked():
-    st.session_state.questions_text = prompts.work_history_questions
-
-def signed_contract_flow_clicked():
-    st.session_state.questions_text = prompts.signed_contract_questions.format(company=company)
-
-def sales_manager_flow_clicked():
-    st.session_state.questions_text = prompts.sales_manager_questions
-
-def software_engineer_flow_clicked():
-    st.session_state.questions_text = prompts.software_engineer_questions
-
-def nurse_practitioner_flow_clicked():
-    st.session_state.questions_text = prompts.nurse_practitioner_questions
-
-st.write("You can also choose from a questions template below")
-st.button("Retail Appointment Generator questions", on_click=retail_appointment_flow_clicked)
-st.button("Warehouse Operator", on_click=warehouse_operator_flow_clicked)
-st.button("Onboarding flow asking for signed contract", on_click=signed_contract_flow_clicked)
-st.button("Onboarding flow with work history questions", on_click=work_history_flow_clicked)
-st.button("Channel Sales Manager", on_click=sales_manager_flow_clicked)
-st.button("Software Engineer", on_click=software_engineer_flow_clicked)
-st.button("Nurse Practitioner", on_click=nurse_practitioner_flow_clicked)
 
 phone_number = st.text_input(
     label="Enter the candidate's phone number here in the given format ('+' followed by the country-code and mobile-number with no spaces in-between )",
     placeholder="+18888888888",
 )
 
-# st.button("Make the call", type="primary")
-
-# st.write(questions)
 
 if st.button("Make the call", type="primary"):
-    data = create_payload(company, questions, phone_number, candidate_name, role)
-    st.write("The AI assistant is calling the above number now.")
-    create_call(data)
+    try:
+        data = create_payload(company, questions, phone_number, candidate_name, role, region, selected_template)
+        if(data):
+            create_call(data)
+            with st.empty():
+                st.write("The AI assistant is calling the above number now.")
+                time.sleep(5)
+                st.write("")
+            st.session_state.recording_button_clicked = False
+        else:
+            print("No payload recieved for creating call")
+    except Exception as e:
+        print("Error creating call: ", e)
 
-    # print(prompts.user_prompt.format(questions=questions))
+    
 st.markdown("# ")
-if st.button("Interview Recording", type="primary"):
+if st.button("Interview Recording", type="primary", disabled=st.session_state.recording_button_clicked):
     call_id = get_call_id()
     if call_id:    
         url = f"https://api.vapi.ai/call/{call_id}"
