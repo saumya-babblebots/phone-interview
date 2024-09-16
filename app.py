@@ -8,10 +8,7 @@ from region_voices import REGION_VOICES
 st.markdown("# Initiate a call ")  
 st.sidebar.markdown("# Babblebots ")
 
-# Your Vapi API Authorization token
 auth_token = st.secrets["auth_token"]
-
-# Phone Number ID of the number to be used for calling
 phone_number_id = st.secrets["phone_number_id"]
 
 
