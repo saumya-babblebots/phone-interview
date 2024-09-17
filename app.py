@@ -112,7 +112,7 @@ company = st.text_input(
 )
 
 candidate_name = st.text_input(
-    label="Enter the first name of the candidate here (optional)",
+    label="Enter the first name of the candidate here ",
     # value="AMS"
 )
 
