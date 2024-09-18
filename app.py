@@ -72,6 +72,12 @@ if 'call_id' not in st.session_state:
 if 'recording_button_clicked' not in st.session_state:
     st.session_state.recording_button_clicked = True
 
+if 'recording_button_clicked' not in st.session_state:
+    st.session_state.recording_button_clicked = True
+    
+if 'transcript_button_clicked' not in st.session_state:
+    st.session_state.transcript_button_clicked = True
+
 def show_questions():
     selected_option = st.session_state.questions_dropdown
     print(f"Selected option: {selected_option}")
@@ -160,29 +166,30 @@ if st.button("Make the call", type="primary"):
                 time.sleep(5)
                 st.write("")
             st.session_state.recording_button_clicked = False
+            st.session_state.transcript_button_clicked = False
         else:
             print("No payload recieved for creating call")
     except Exception as e:
         print("Error creating call: ", e)
 
     
-st.markdown("# ")
-if st.button("Interview Recording", type="primary", disabled=st.session_state.recording_button_clicked):
-    call_id = get_call_id()
-    if call_id:    
-        url = f"https://api.vapi.ai/call/{call_id}"
-        response = requests.request("GET", url, headers=headers)
-        if response.status_code == 200:
-            recording = response.json().get("recordingUrl",None)
-            print(recording)
+# st.markdown("# ")
+# if st.button("Interview Recording", type="primary", disabled=st.session_state.recording_button_clicked):
+#     call_id = get_call_id()
+#     if call_id:    
+#         url = f"https://api.vapi.ai/call/{call_id}"
+#         response = requests.request("GET", url, headers=headers)
+#         if response.status_code == 200:
+#             recording = response.json().get("recordingUrl",None)
+#             print(recording)
         
-            if recording:
-                st.markdown("# ")
-                st.audio(recording)
-            else: 
-                st.warning("No recording found or call is still in progress!")
-        else:
-            st.error(f"failed to fetch interview details {response.status_code} - {response.text}")
+#             if recording:
+#                 st.markdown("# ")
+#                 st.audio(recording)
+#             else: 
+#                 st.warning("No recording found or call is still in progress!")
+#         else:
+#             st.error(f"failed to fetch interview details {response.status_code} - {response.text}")
         
-    else:
-        st.info("Call id not found, please make a call first")
+#     else:
+#         st.info("Call id not found, please make a call first")
