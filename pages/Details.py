@@ -2,7 +2,7 @@ import requests
 import streamlit as st
 from app import get_call_id
 
-st.markdown("# Get call transcript ")  
+st.markdown("# Get call details ")  
 st.sidebar.markdown("# Babblebots ")
 
 auth_token = st.secrets["auth_token"]
