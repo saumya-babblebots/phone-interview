@@ -20,8 +20,8 @@ headers = {
 
 def create_payload(company, questions, candidate_phone_number, candidate_name, role, region, selected_template):
     # Create the payload for the API request
-    if not candidate_name:
-        candidate_name = "there"
+    # if not candidate_name:
+    #     candidate_name = "there"
         
     config.stt_model["keywords"] = [company, candidate_name]
     config.llm["messages"][0]["content"] = prompts.system_prompt.format(company=company)
