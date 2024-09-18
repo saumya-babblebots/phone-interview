@@ -5,8 +5,8 @@ from app import get_call_id
 st.markdown("# Get call transcript ")  
 st.sidebar.markdown("# Babblebots ")
 
-auth_token = st.secrets["auth"]["auth_token"]
-phone_number_id = st.secrets["auth"]["phone_number_id"]
+auth_token = st.secrets["auth_token"]
+phone_number_id = st.secrets["phone_number_id"]
 
 call_id = get_call_id()
 
