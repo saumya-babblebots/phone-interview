@@ -9,8 +9,9 @@ REGION_VOICES = {
     },
     "India": {
         #"model": "eleven_turbo_v2_5",
-        "voiceId": "en-IN-NeerjaNeural",  
+        "voiceId": "en-IN-AnanyaNeural",  
         "provider": "azure",
+        "speed": 1.2,
         #"stability": 0.5,
         #"similarityBoost": 0.75
     }
