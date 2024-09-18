@@ -11,7 +11,7 @@ REGION_VOICES = {
         #"model": "eleven_turbo_v2_5",
         "voiceId": "en-IN-AnanyaNeural",  
         "provider": "azure",
-        "speed": 1.2,
+        "speed": 1.0,
         #"stability": 0.5,
         #"similarityBoost": 0.75
     }
