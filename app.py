@@ -23,7 +23,7 @@ def create_payload(company, questions, candidate_phone_number, candidate_name, r
     # if not candidate_name:
     #     candidate_name = "there"
         
-    config.stt_model["keywords"] = [company, candidate_name]
+    #config.stt_model["keywords"] = [company, candidate_name]
     config.llm["messages"][0]["content"] = prompts.system_prompt.format(company=company)
     config.llm["messages"][1]["content"] = prompts.user_prompt.format(questions=questions, company=company)
     if (selected_template in ("Car Salesman", "Software Engineer")) or (role.lower() in ("car salesman", "software engineer")):
