@@ -11,7 +11,6 @@ st.sidebar.markdown("# Babblebots ")
 auth_token = st.secrets["auth_token"]
 phone_number_id = st.secrets["phone_number_id"]
 
-
 # Create the header with Authorization token
 headers = {
     'Authorization': f'Bearer {auth_token}',
@@ -20,25 +19,32 @@ headers = {
 
 def create_payload(company, questions, candidate_phone_number, candidate_name, role, region, selected_template):
     # Create the payload for the API request
-    # if not candidate_name:
-    #     candidate_name = "there"
+    recruiter = "Eric"
+    if region == 'India':
+        recruiter = "Tina"        
         
     #config.stt_model["keywords"] = [company, candidate_name]
+    first_bot_message = prompts.first_bot_message.format(company=company, candidate_name=candidate_name, role=role, recruiter=recruiter)
     config.llm["messages"][0]["content"] = prompts.system_prompt.format(company=company)
     config.llm["messages"][1]["content"] = prompts.user_prompt.format(questions=questions, company=company)
     if (selected_template in ("Car Salesman", "Software Engineer")) or (role.lower() in ("car salesman", "software engineer")):
         config.llm['messages'][1]['content'] = prompts.user_prompt_with_probing.format(questions=questions, company=company)
-        
-    if region == 'India':
-        recruiter = "Tina"
-    else:
-        recruiter = "Eric"
+    elif (selected_template == "Structural Coatings - Material Handler"):
+        first_bot_message = prompts.alt_first_bot_message.format(candidate_name=candidate_name)
+        config.llm['messages'][1]['content'] = prompts.user_prompt_material_handler.format(
+            candidate_name=candidate_name,
+            recruiter=recruiter,
+            questions=questions, 
+            company=company,
+            role=role,
+            # first_bot_message=prompts.first_bot_message
+        )
         
     voice_settings = REGION_VOICES.get(region,REGION_VOICES['US'])
-    
+
     data = {
         'assistant': {
-            "firstMessage": prompts.first_bot_message.format(company=company, candidate_name=candidate_name, role=role, recruiter=recruiter),
+            "firstMessage": first_bot_message,
             #"endCallMessage": prompts.end_call_message.format(candidate_name=candidate_name),
             "endCallPhrases": ["Have a great day."],
             "backgroundDenoisingEnabled": True,
@@ -47,10 +53,10 @@ def create_payload(company, questions, candidate_phone_number, candidate_name, r
             "transcriber": config.stt_model,
             "model": config.llm,
             "startSpeakingPlan": {
-                "waitSeconds": 0.8
+                "waitSeconds": 1.0
             },
             "endCallFunctionEnabled": True,
-            "voice":  voice_settings,
+            "voice": voice_settings,
             "backgroundSound": "off"
         },
         'phoneNumberId': phone_number_id,
@@ -114,16 +120,17 @@ def get_call_id():
 
 company = st.text_input(
     label="Enter the name of the company that the AI assistant is calling on behalf of",
-    #value="AMS"
+    value="Ameri-Force"
 )
 
 candidate_name = st.text_input(
-    label="Enter the first name of the candidate here ",
-    # value="AMS"
+    label="Enter the first name of the candidate here",
+    # value="Megha"
 )
 
 role = st.text_input(
     label="Enter the role that the candidate is being interviewed for",
+    value="Structural Coatings - Material Handler"
 )
 
 selected_template = st.selectbox(
@@ -136,9 +143,10 @@ selected_template = st.selectbox(
         "Channel Sales Manager",
         "Software Engineer",
         "Nurse Practitioner",
-        "Car Salesman"
+        "Car Salesman",
+        "Structural Coatings - Material Handler"
     ),
-    index=None,
+    index=8,  # None,
     on_change=show_questions,
     key="questions_dropdown"
 )
@@ -146,15 +154,16 @@ selected_template = st.selectbox(
 questions = st.text_area(
     label="Enter the questions here",
     height=200,
-    key="questions_text"
+    key="questions_text",
+    value=prompts.material_handler
 )
 
 
 phone_number = st.text_input(
     label="Enter the candidate's phone number here in the given format ('+' followed by the country-code and mobile-number with no spaces in-between )",
     placeholder="+18888888888",
+    # value="+91-9930835419"
 )
-
 
 if st.button("Make the call", type="primary"):
     try:
