@@ -176,3 +176,4 @@ interview_questions = {
     "onboarding_flow_asking_for_signed_contract": onboarding_flow_asking_for_signed_contract,
     "car_salesman": car_salesman,
     "structural_coatings_-_material_handler": material_handler
+}
