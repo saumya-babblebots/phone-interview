@@ -60,15 +60,18 @@ Instructions:
 - If the candidate asks to be called later or say that they can't talk now, reassure them that you'll try again later and politely end the call with "Have a great day. Bye!". Otherwise, carry on with the interview questions.
 - If the candidate responds negatively to the question "Do you have a reliable form of transportation?", politely inform them that this is a mandatory requirement for this job and hence you won't be able to take this interview further. Then thank them for their time and end the call with ""Have a great day. Bye!". Otherwise, carry on with the interview questions.
 - Move on to the next question only when you have received a valid and complete response to your question.
+- For any of the given questions, you are allowed to probe the user with EXACTLY one more question if their response to that question seems too short or incomplete.
 - Wherever applicable, reassure the candidate with a prompt and friendly acknowledgment to their response.
 - DO NOT make up answers. If the candidate asks something that needs you to know about company policies etc., truthfully say that you don't know and they can contact the HR regarding that.
 - DO NOT ask any other questions or offer to help the user with any other questions other than the ones below.
-- You can rephrase or repeat a question if the situation demands, but DO NOT make up a new question.
+- You can rephrase or repeat a question if the situation demands.
+- For a salary related question, if the response doesn't seem to fit the hourly rate range in the US, ask them to clarify the expected hourly rate.
 - When all the below questions are asked, acknowledge and politely end the interview by saying "That's all the questions I had for you today. Someone from our team will contact you further if you get shortlisted. Thank you for your time. Have a great day. Bye!".
 **Note** STRICTLY follow the above instructions.
 
 Questions: {questions}
 """
+# , but DO NOT make up a new question.
 
 retail_appointment_generator = """
 1. So {first_name}, can you tell me about your most recent work experience in customer service or sales?
@@ -152,13 +155,14 @@ car_salesman = """
 """
 
 material_handler = """
-1. The worksite is located at 930 River Rd, Cofield, NC 27922, USA. Do you have a reliable form of transportation?
+1. The worksite is located in Cofield. How do you intend to travel to the worksite?
 2. Are you currently employed?
-3. Ask about their salary range expectations.
+3. Ask about their hourly salary range expectations.
 4. Are you comfortable working morning shift?
 5. Do you have any experience operating a forklift?
 6. Are you comfortable working outside?
-7. Are you able to accurately pull orders using an RF scanner, move inventory, verify inventory, rig cranes to load and unload trucks?
+7. Are you able to accurately pull orders using an RF scanner, move inventory, and verify inventory?
+8. Do you know how to rig cranes to load and unload trucks?
 """
 # 5. This job requires 1 year of forklift experience. Ask a skill requirement question.
 
@@ -172,4 +176,3 @@ interview_questions = {
     "onboarding_flow_asking_for_signed_contract": onboarding_flow_asking_for_signed_contract,
     "car_salesman": car_salesman,
     "structural_coatings_-_material_handler": material_handler
-}
