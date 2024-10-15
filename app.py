@@ -3,7 +3,6 @@ import requests
 import time
 import prompts
 import config
-from region_voices import REGION_VOICES
 
 st.markdown("# Initiate a call ")  
 st.sidebar.markdown("# Babblebots ")
@@ -19,46 +18,8 @@ headers = {
 
 def create_payload(company, questions, candidate_phone_number, candidate_name, role, region, selected_template):
     # Create the payload for the API request
-    recruiter = "Eric"
-    if region == 'India':
-        recruiter = "Tina"        
-        
-    #config.stt_model["keywords"] = [company, candidate_name]
-    first_bot_message = prompts.first_bot_message.format(company=company, candidate_name=candidate_name, role=role, recruiter=recruiter)
-    config.llm["messages"][0]["content"] = prompts.system_prompt.format(company=company)
-    config.llm["messages"][1]["content"] = prompts.user_prompt.format(questions=questions, company=company)
-    if (selected_template in ("Car Salesman", "Software Engineer")) or (role.lower() in ("car salesman", "software engineer")):
-        config.llm['messages'][1]['content'] = prompts.user_prompt_with_probing.format(questions=questions, company=company)
-    elif (selected_template == "Structural Coatings - Material Handler"):
-        first_bot_message = prompts.alt_first_bot_message.format(candidate_name=candidate_name)
-        config.llm['messages'][1]['content'] = prompts.user_prompt_material_handler.format(
-            candidate_name=candidate_name,
-            recruiter=recruiter,
-            questions=questions, 
-            company=company,
-            role=role,
-            # first_bot_message=prompts.first_bot_message
-        )
-        
-    voice_settings = REGION_VOICES.get(region,REGION_VOICES['US'])
-
     data = {
-        'assistant': {
-            "firstMessage": first_bot_message,
-            #"endCallMessage": prompts.end_call_message.format(candidate_name=candidate_name),
-            "endCallPhrases": ["Have a great day."],
-            "backgroundDenoisingEnabled": True,
-            "responseDelaySeconds": 0.8,
-            "silenceTimeoutSeconds": 30,
-            "transcriber": config.stt_model,
-            "model": config.llm,
-            "startSpeakingPlan": {
-                "waitSeconds": 1.0
-            },
-            "endCallFunctionEnabled": True,
-            "voice": voice_settings,
-            "backgroundSound": "off"
-        },
+        'assistant': config.get_assistant(selected_template, region, company, candidate_name, role, questions),
         'phoneNumberId': phone_number_id,
         'customer': {
             'number': candidate_phone_number,
@@ -69,7 +30,7 @@ def create_payload(company, questions, candidate_phone_number, candidate_name, r
 
 region = st.selectbox(
     label="Select the region",
-    options=list(REGION_VOICES.keys())  
+    options=list(config.REGION_VOICES.keys())  
 )
 
 if 'call_id' not in st.session_state:
@@ -78,9 +39,6 @@ if 'call_id' not in st.session_state:
 if 'recording_button_clicked' not in st.session_state:
     st.session_state.recording_button_clicked = True
 
-if 'recording_button_clicked' not in st.session_state:
-    st.session_state.recording_button_clicked = True
-    
 if 'transcript_button_clicked' not in st.session_state:
     st.session_state.transcript_button_clicked = True
 
@@ -89,8 +47,11 @@ def show_questions():
     print(f"Selected option: {selected_option}")
     if selected_option:
         st.session_state.questions_text = prompts.interview_questions["_".join(selected_option.lower().split())]
+        if "Onboarding flow" not in selected_option:
+            st.session_state.role_name = selected_option
     else:
         st.session_state.questions_text = ""
+    
 
 def create_call(data):
     # Make the POST request to VAPI to create the phone call
@@ -120,22 +81,18 @@ def get_call_id():
 
 company = st.text_input(
     label="Enter the name of the company that the AI assistant is calling on behalf of",
-    value="Ameri-Force"
+    value="AmeriForce"
 )
 
 candidate_name = st.text_input(
     label="Enter the first name of the candidate here",
-    # value="Megha"
-)
-
-role = st.text_input(
-    label="Enter the role that the candidate is being interviewed for",
-    value="Structural Coatings - Material Handler"
 )
 
 selected_template = st.selectbox(
     "Choose the interview questions from one of these templates or type out your own below",
     (
+        "Structural Coatings - Material Handler",
+        "Hurricane Clean-Up Labor",
         "Retail Appointment Generator", 
         "Warehouse Operator", 
         "Onboarding flow asking for signed contract", 
@@ -143,10 +100,9 @@ selected_template = st.selectbox(
         "Channel Sales Manager",
         "Software Engineer",
         "Nurse Practitioner",
-        "Car Salesman",
-        "Structural Coatings - Material Handler"
+        "Car Salesman"
     ),
-    index=8,  # None,
+    index=0,  # None,
     on_change=show_questions,
     key="questions_dropdown"
 )
@@ -158,11 +114,15 @@ questions = st.text_area(
     value=prompts.material_handler
 )
 
+role = st.text_input(
+    label="Enter the role that the candidate is being interviewed for",
+    key="role_name",
+    value="Structural Coatings - Material Handler"
+)
 
 phone_number = st.text_input(
     label="Enter the candidate's phone number here in the given format ('+' followed by the country-code and mobile-number with no spaces in-between )",
-    placeholder="+18888888888",
-    # value="+91-9930835419"
+    placeholder="+18888888888"
 )
 
 if st.button("Make the call", type="primary"):
@@ -182,23 +142,3 @@ if st.button("Make the call", type="primary"):
         print("Error creating call: ", e)
 
     
-# st.markdown("# ")
-# if st.button("Interview Recording", type="primary", disabled=st.session_state.recording_button_clicked):
-#     call_id = get_call_id()
-#     if call_id:    
-#         url = f"https://api.vapi.ai/call/{call_id}"
-#         response = requests.request("GET", url, headers=headers)
-#         if response.status_code == 200:
-#             recording = response.json().get("recordingUrl",None)
-#             print(recording)
-        
-#             if recording:
-#                 st.markdown("# ")
-#                 st.audio(recording)
-#             else: 
-#                 st.warning("No recording found or call is still in progress!")
-#         else:
-#             st.error(f"failed to fetch interview details {response.status_code} - {response.text}")
-        
-#     else:
-#         st.info("Call id not found, please make a call first")
