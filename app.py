@@ -81,7 +81,7 @@ def get_call_id():
 
 company = st.text_input(
     label="Enter the name of the company that the AI assistant is calling on behalf of",
-    value="AmeriForce"
+    #value="AmeriForce"
 )
 
 candidate_name = st.text_input(
