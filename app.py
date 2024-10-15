@@ -111,13 +111,13 @@ questions = st.text_area(
     label="Enter the questions here",
     height=200,
     key="questions_text",
-    value=prompts.material_handler
+    #value=prompts.material_handler
 )
 
 role = st.text_input(
     label="Enter the role that the candidate is being interviewed for",
     key="role_name",
-    value="Structural Coatings - Material Handler"
+    #value="Structural Coatings - Material Handler"
 )
 
 phone_number = st.text_input(
