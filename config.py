@@ -80,7 +80,7 @@ def get_assistant(selected_template: str, region: str, company: str, candidate_n
         #"endCallMessage": prompts.end_call_message.format(candidate_name=candidate_name),
         "endCallPhrases": ["Have a great day."],
         "backgroundDenoisingEnabled": True,
-        "responseDelaySeconds": 0.8,
+        "responseDelaySeconds": 1.0,
         "silenceTimeoutSeconds": 30,
         "transcriber": stt_model,
         "model": llm,
