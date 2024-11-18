@@ -93,6 +93,7 @@ selected_template = st.selectbox(
     (
         "Structural Coatings - Material Handler",
         "Hurricane Clean-Up Labor",
+        "Customer Support",
         "Retail Appointment Generator", 
         "Warehouse Operator", 
         "Onboarding flow asking for signed contract", 
