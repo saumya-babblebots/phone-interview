@@ -36,8 +36,7 @@ REGION_VOICES = {
         "voiceId": "2zRM7PkgwBPiau2jvVXc",
         "provider": "11labs",
         "stability": 0.5,
-        "similarityBoost": 0.75,
-        "fillerInjectionEnabled": false
+        "similarityBoost": 0.75
     }
 }
 
