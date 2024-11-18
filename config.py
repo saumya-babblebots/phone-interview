@@ -32,12 +32,12 @@ REGION_VOICES = {
         "similarityBoost": 0.75
     },
     "India": {
-        #"model": "eleven_turbo_v2_5",
-        "voiceId": "en-IN-AnanyaNeural",  
-        "provider": "azure",
-        "speed": 1.12,
-        #"stability": 0.5,
-        #"similarityBoost": 0.75
+        "model": "eleven_multilingual_v2",
+        "voiceId": "2zRM7PkgwBPiau2jvVXc",
+        "provider": "11labs",
+        "stability": 0.5,
+        "similarityBoost": 0.75,
+        "fillerInjectionEnabled": false
     }
 }
 
