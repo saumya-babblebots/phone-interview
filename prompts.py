@@ -194,9 +194,19 @@ hurricane_cleanup_labor = """
 6. Do you have any years of Traffic Control experience?
 """
 
+customer_support = """
+1. Are you comfortable working in Nanakramguda, Hyderabad?
+2. Can you describe a time when you successfully improved a customer experience by providing fast and effective service?
+3. How do you ensure that the solutions you provide to customer inquiries are both accurate and personalized?
+4. What experience do you have in customer support roles, and how does it align with the requirement of having a minimum of 1 year of experience?
+5. Can you provide an example of how your fluency in English has helped you in a customer support role?
+6. Are you an undergraduate or graduate, and how will your educational background contribute to this role?
+"""
+
 interview_questions = {
     "retail_appointment_generator": retail_appointment_generator,
     "warehouse_operator": warehouse_operator,
+    "customer_support" : customer_support,
     "channel_sales_manager": channel_sales_manager,
     "nurse_practitioner": nurse_practitioner,
     "software_engineer": software_engineer,
