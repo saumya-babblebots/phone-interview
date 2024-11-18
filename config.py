@@ -44,7 +44,7 @@ REGION_VOICES = {
 def get_assistant(selected_template: str, region: str, company: str, candidate_name: str, role: str, questions: str):
     recruiter = "Eric"
     if region == 'India':
-        recruiter = "Tina"        
+        recruiter = "Tushar"        
     
     first_bot_message = prompts.alt_first_bot_message.format(candidate_name=candidate_name)
     if company.isalpha():
