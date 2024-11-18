@@ -32,11 +32,12 @@ REGION_VOICES = {
         "similarityBoost": 0.75
     },
     "India": {
-        "model": "eleven_multilingual_v2",
-        "voiceId": "2zRM7PkgwBPiau2jvVXc",
-        "provider": "11labs",
-        "stability": 0.5,
-        "similarityBoost": 0.75
+                    "model": "eleven_multilingual_v2",
+                    "style": 0.1,
+                    "voiceId": "3gsg3cxXyFLcGIfNbM6C",
+                    "provider": "11labs",
+                    "stability": 0.5,
+                    "similarityBoost": 0.75
     }
 }
 
